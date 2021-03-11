@@ -1,31 +1,17 @@
 ﻿#include<iostream>
- #include<Windows.h>
+#include<ctype.h> //Для проверки является ли символ цифрой
+#include<Windows.h>
 //using namespace std;
 
-//TODO: 2021_02_26
+//TODO: 2021_03_10
 /*
 В проект CStrings добавить функции :
-bool is_int_number(char str[]);	//Определяет, является ли строка целым числом.
-int  to_int_number(char str[]);	//Если строка - целое число, то функция возвращает его значение.
-bool is_bin_number(char str[]);	//Определяет, является ли строка Двоичным числом.
-int  bin_to_dec(char str[]);	//Если строка - Двоичное число, то функция возвращает его десятичное значение.
-bool is_hex_number(char str[]);	//Определяет, является ли строка Шестнадцатеричным числом.
-int  hex_to_dec(char str[]);	//Если строка - Шестнадцатеричное число, то функция возвращает его десятичное значение.
-
-//DONE: 2021_02_24
-bool is_palindrome(char str[]);	//Определяет, является ли строка палиндромом. --done
-
-//DONE: 2021_02_24
-void to_upper(char str[]);	//переводит строку в верхний регистр --done
-void to_lower(char str[]);	//переводит строку в нижний регистр --done
-void capitalize(char str[]);	//первую букву каждого слова в предложении делает заглвыной --done
-void shrink(char str[]);	//удаляет лишние пробелы из предложения, например: --done
-				//Харашо      живет   на   свете          Винни Пух!
-				//Харашо живет на свете Винни Пух!
+bool is_ip_address(char str[]);	//Проверяет, является ли строка IP-адресом --done
+bool is_mac_address(char str[]);//Проверяет, является ли строка MAC-адресом --todo
 */
 
 //#define CW_CSTRINGS_FIRST_MEET //Первое знакомство со строками
-#define HW_CSTRINGS_2021_02_24 //Первое знакомство со строками
+//#define HW_CSTRINGS_2021_02_24 //Первое знакомство со строками
 
 int StrLen(char str[]);			//Вычисляет длинну строки
 
@@ -36,6 +22,16 @@ void shrink(char str[]);		//удаляет лишние пробелы из пр
 void remove_symbol(char str[], char symbol); //Удаляет все вхождения символа
 
 bool is_palindrome(char str[]);	//Определяет, является ли строка палиндромом.
+bool is_int_number(char str[]);	//Определяет, является ли строка целым числом.
+bool is_bin_number(char str[]);	//Определяет, является ли строка Двоичным числом.
+bool is_hex_number(char str[]);	//Определяет, является ли строка Шестнадцатеричным числом.
+
+bool is_ip_address(char str[]);	//Проверяет, является ли строка IP-адресом
+bool is_mac_address(char str[]);//Проверяет, является ли строка MAC-адресом
+
+int  to_int_number(char str[]);	//Если строка - целое число, то функция возвращает его значение.
+int  bin_to_dec(char str[]);	//Если строка - Двоичное число, то функция возвращает его десятичное значение.
+int  hex_to_dec(char str[]);	//Если строка - Шестнадцатеричное число, то функция возвращает его десятичное значение.
 
 void main()
 {
@@ -63,10 +59,10 @@ void main()
 	//char str[] = " абвгд е  ёжз ийклм н опр стуф хцч шщ ъыь эюя ";
 	//char str[] = " ab cd e f g h i gk l m o p q rst uv wz y x ";
 	//char str[] = " Харашо      живет   на   свете          Винни Пух!";
-	//char str[] = "123321";
+	char str[] = "123 321";
 	//char str[] = "1234321";
 	//char str[] = "123456";
-	char str[] = "Аргентина манит негра";
+	//char str[] = "Аргентина манит негра";
  	
 	/*
 	const int n = 20;
@@ -86,6 +82,7 @@ void main()
 	//to_lower(str);	//переводит строку в нижний регистр;
 	//capitalize(str);	//первую букву каждого слова в предложении делает заглвыной;
 	//shrink(str);		//удаляет лишние пробелы из предложения;
+	std::cout << (is_int_number(str)?"Строка число!":"Строка не число!") << std::endl;
 
 	//Вывод результата:
 	//std::cout << "После реформации :";
@@ -101,9 +98,30 @@ void main()
 	{
 		std::cout << "Строка НЕ палиндром!" << std::endl;
 	}
+
+
 	std::cout << str << std::endl;
 
 #endif // HW_CSTRINGS_2021_02_24
+
+	const int n = 256;
+	char str[n]{};
+
+	std::cout << "String is IPv4?" << std::endl;
+	std::cout << "Введите строку: ";
+	std::cin.getline(str, n);
+
+	//std::cout << (is_int_number(str) ? "Число" : "Не число") << std::endl;
+	//std::cout << (is_bin_number(str) ? "Двоичное" : "Не двоичное") << std::endl;
+	//std::cout << (is_hex_number(str) ? "HEX" : "NOT HEX") << std::endl;
+	std::cout << (is_ip_address(str) ? "it's IPv4" : "it's NOT IPv4") << std::endl;
+	//std::cout << str <<"(bin) = "<< bin_to_dec(str) << "(dec)" << std::endl;
+	//std::cout << str <<"(bin) = "<< bin_to_dec(str) << "(dec)" << std::endl;
+	//std::cout << str <<"(HEX) = "<< hex_to_dec(str) << "(dec)" << std::endl;
+
+
+	//std::cout << (is_int_number(str) ? to_int_number(str) : 0) * 2 << std::endl;
+
 }
 
 int StrLen(char str[])
@@ -276,6 +294,232 @@ bool is_palindrome(char str[])
 	}
 	delete[] buffer;
 	return true;
+}
+
+bool is_int_number(char str[])
+{//Определяет, является ли строка целым числом.
+
+	//int len = StrLen(str);
+	//char* buffer = new char[len + 1]{};
+	//std::strcpy(buffer, str);
+
+	//remove_symbol(buffer, ' ');
+
+	//for (int i = 0; buffer[i]; i++)
+	//{
+	//	if (buffer[i] < '0' || buffer[i]>'9')
+	//	{	
+	//		delete[] buffer;
+	//		return false;
+	//	}
+	//}
+	//delete[] buffer;
+
+	if (!str[0]) return false; //!!!
+
+	for (int i = 0; str[i]; i++)
+	{
+		if (!(str[i] >= '0' && str[i] <= '9') && str[i] != ' ') return false;
+		if (str[i] == ' ' && str[i + 1] == ' ') return false;
+	}
+
+	return true;
+}
+
+bool is_bin_number(char str[])
+{//Определяет, является ли строка Двоичным числом.
+	for (int i = 0; str[i]; i++)
+	{
+		if (str[i] != '0' && str[i] != '1' && str[i] != ' ') return false;
+		if (str[i - 1] == ' ' && str[i] == ' ' && str[i + 1] == ' ') return false;
+	}
+
+	return true;
+}
+
+bool is_hex_number(char str[])
+{//Определяет, является ли строка Шестнадцатеричным числом.
+	
+	for (int i = str[0]=='0' && str[1] =='x' ? 2:0; str[i]; i++)
+	{
+		if (!(str[i] >= '0' && str[i] <= '9') &&
+			!(str[i] >= 'A' && str[i] <= 'F') &&
+			!(str[i] >= 'a' && str[i] <= 'f') &&
+			str[i] != ' ') return false;
+		if (str[i] == ' ' && str[i + 1] == ' ') return false;
+	}
+	return true;
+}
+
+bool is_ip_address(char str[])
+{//Проверяет, является ли строка IP-адресом
+//0.0.0.0 - 255.255.255.255
+
+	bool is_ip = true;
+
+	int len_group = 4;
+	char* one_group = new char[len_group] {};
+	char* two_group = new char[len_group] {};
+	char* three_group = new char[len_group] {};
+	char* four_group = new char[len_group] {};
+
+	int point_counter = 0;
+	int digit_counter = 0;
+
+	if (str[0] == '.')
+	{//вначале строки не может стоять точка
+		is_ip = false;
+	}
+
+	for (int i = 0; str[i]; i++)
+	{
+		if (!is_ip) break; //Выход из цикла по какой-нибудь ошибке...
+
+		if (str[i] != '.' && !(str[i]>= '0' && str[i] <= '9')) //Встреча недопустимого символа
+		{
+			is_ip = false;
+			break;
+		}
+
+		if (str[i] == '.') //Переход по группам
+		{
+			if (++point_counter > 3) //В строке больше трёх точек
+			{
+				is_ip = false;
+				break;
+			}
+			digit_counter = 0;
+
+			continue;
+		}
+
+		if (digit_counter > 2) //В группе больше трех символов
+		{
+			is_ip = false;
+			break;
+		}
+
+		switch (point_counter)
+		{
+		case 0:
+			one_group[digit_counter++] = str[i];
+			break;
+		case 1:
+			two_group[digit_counter++] = str[i];
+			break;
+		case 2:
+			three_group[digit_counter++] = str[i];
+			break;
+		case 3:
+			four_group[digit_counter++] = str[i];
+			break;
+		default:
+			break;
+		}
+
+	}
+	
+	if (is_ip && point_counter == 3 &&
+		is_int_number(one_group) && is_int_number(two_group) && is_int_number(three_group) && is_int_number(four_group))
+	{
+		if ((to_int_number(one_group) >= 0 && to_int_number(one_group) <= 255) &&
+			(to_int_number(two_group) >= 0 && to_int_number(two_group) <= 255) &&
+			(to_int_number(three_group) >= 0 && to_int_number(three_group) <= 255) &&
+			(to_int_number(four_group) >= 0 && to_int_number(four_group) <= 255))
+		{//от 0 - 255
+			is_ip = true;
+		}
+		else
+		{
+			is_ip = false;
+		}
+
+	}
+	else
+	{//Одна из групп не является целым числом.
+		is_ip = false;
+	}
+
+	//Удалить временные динамические массивы:
+	delete[] one_group;
+	delete[] two_group;
+	delete[] three_group;
+	delete[] four_group;
+
+	return is_ip;
+}
+
+bool is_mac_address(char str[])
+{//Проверяет, является ли строка MAC-адресом
+//00 00 00 00 00 00 - ff ff ff ff ff ff
+//00:00:00:00:00:00 - ff:ff:ff:ff:ff:ff
+//00-00-00-00-00-00 - ff-ff-ff-ff-ff-ff
+//000000000000 - ffffffffffff
+
+
+
+	return false;
+}
+
+int to_int_number(char str[])
+{//Если строка - целое число, то функция возвращает его значение.
+	if (!is_int_number(str))return 0;
+
+	int number = 0;
+
+	for (int i = 0; str[i]; i++)
+	{
+		if (str[i] == ' ') continue;
+		number *= 10;
+		number += str[i] - 48;
+	}
+
+	return number;
+}
+
+int bin_to_dec(char str[])
+{//Если строка - Двоичное число, то функция возвращает его десятичное значение.
+
+	if (!is_bin_number(str)) return 0;
+
+	int n = StrLen(str); //Разрядность числа.
+	int decimal = 0; //Конечное десятичное число
+	int weight = 1; //Весовой коэффициент разряда.
+
+	for (int i = n - 1; i>=0 ; i--)
+	{
+		if (str[i] != ' ')
+		{
+			decimal += (str[i] - 48) * weight;
+			weight *= 2;
+		}
+	}
+	return decimal;
+}
+
+int hex_to_dec(char str[])
+{//Если строка - Шестнадцатеричное число, то функция возвращает его десятичное значение.
+	
+	if (!is_hex_number(str)) return 0;
+
+	int n = StrLen(str);//Значение разряда. Разрядность числа.
+	char* buffer = new char[n + 1]{};
+	strcpy(buffer, str);
+	to_upper(buffer);
+
+	int decimal = 0; //Конечное десятичное число
+	int weight = 1;//Весовой коэфициент
+	
+	for (int i = n - 1; i >= 0; i--)
+	{
+		if (buffer[i] == 'X') break;
+		if (buffer[i] != ' ')
+		{
+			decimal += (buffer[i] - (isdigit(buffer[i]) ? 48 : 55)) * weight;
+			weight *= 16;
+		}
+	}
+	return decimal;
 }
 
 //Исполнитель
